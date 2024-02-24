@@ -1,2 +1,5 @@
 .DS_Store
 buja.csv
+venv
+lisboa.csv
+*.pyc
