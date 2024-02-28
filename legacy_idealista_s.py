@@ -7,6 +7,9 @@ print("-" * 10 + "Beggining" + "-" * 10)
 # start new session to persist data between requests
 session = requests.Session()
 
+def sanitize(data):
+    return data.replace('"', '""').replace('\n', ' ').replace('\r', ' ')
+
 headers = {
     'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
     'sec-ch-device-memory': '8',
@@ -27,8 +30,6 @@ def get_page(page, headers):
 
 page = 1
 soup = get_page(page, headers)
-
-print(soup.prettify())
 
 h1_container = soup.find("h1", id="h1-container")
 print("h1_container: " + str(h1_container))
@@ -51,12 +52,12 @@ with open("lisboa.csv", "w", encoding="UTF8") as f:
 
     while property_number <= max_property_number:
         print("\n\n page num" + str(page) + "\n")
+        print("property_number: " + str(property_number) +"/"+str(max_property_number) + "\n")
         containers = soup.find_all("div", class_="item-info-container")
         for container in containers:
             title = container.find("a", class_="item-link").text
             price = container.find("span", class_="item-price h2-simulated").text
             item_details = container.find_all("span", class_="item-detail")
-            print(str(property_number))
             property_number += 1
             if len(item_details) >= 1:
                 area = item_details[0].text
@@ -66,9 +67,9 @@ with open("lisboa.csv", "w", encoding="UTF8") as f:
                 else:
                     desc = "no desc"
                 # write the data
-                writer.writerow([title, price, area, type, desc])
+                writer.writerow([sanitize(title), sanitize(price), sanitize(area), sanitize(type), sanitize(desc)])
             else:
                 print(title)
         page += 1
-        time.sleep(1.0)
+        time.sleep(0.01)
         soup = get_page(page, headers)
