@@ -1,6 +1,6 @@
 # Property scraping
 
-- [] Create data model
+- [ ] Create data model
 
   - Property
     - title
@@ -37,7 +37,7 @@
     - url
     - source (table)
 
-- [] Scrape data every 15 minutes
-  - [] Get data from source
-  - [] Save data to database
-  - [] Add button to scrape data manually
+- [ ] Scrape data every 15 minutes
+  - [ ] Get data from source
+  - [ ] Save data to database
+  - [ ] Add button to scrape data manually
